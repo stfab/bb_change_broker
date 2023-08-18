@@ -1,0 +1,12 @@
+[tool.coverage.run]
+# the following files are omitted when using coverage
+omit = [
+    "bb_change_broker/server.py",
+    "bb_change_broker/client.py",
+    "bb_change_broker/util/cli.py",             # cannot be tested without cli
+    "bb_change_broker/backend/cli.py",          # cannot be tested without cli
+    "bb_change_broker/backend/http_handler.py", # cannot be tested without http server
+    "bb_change_broker/backend/broker.py",       # cannot be tested without broker
+    "*__init__.py",                             # empty
+    "*base.py",                                 # abstract class, no testable methods
+]

@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import sys
+import json
+
+from bb_change_broker.server import Server
+from bb_change_broker.client import Client
+
+if len(sys.argv) != 2:
+    print("Usage: bb_change_broker <config_file>")
+    sys.exit(1)
+
+
+with open(sys.argv[1], "rb") as f:
+    config = json.load(f)
+
+
+if config["DEFAULT"]["mode"] == "server":
+    server = Server(config)
+    server.run()
+elif config["DEFAULT"]["mode"] == "client":
+    client = Client(config)
+    client.run()
