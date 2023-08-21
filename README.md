@@ -78,17 +78,50 @@ The default configuration of the .json file offers general settings.
 
   * mode: client or server
   * encoding: The encoding of machine. Default is utf-8.
-  * log_file: A file path for the log, if empty the log will be printed to stdout.
-  * log_level: The log level as int. DEBUG = 10, INFO = 20, WARNING = 30, ERROR = 40, CRITICAL = 50.
 
     ```json
       "DEFAULT": {
         "mode": "client",
-        "encoding": "utf-8",
-        "log_file": "/var/log/bb_change_broker.log",
-        "log_level": 20
+        "encoding": "utf-8"
       }
     ```
+
+### Logging
+
+The logging configuration is optional. If you do not specify it, then the logger is disabled.
+
+The syntax follows the built-in Python logging module dictionary config, also see https://docs.python.org/3/library/logging.config.html. 
+
+To specify the logging configuration, you need to add a section called "logging" and follow the specification of the logging module.
+
+```json
+"logging": {
+        "version": 1,
+        "disable_existing_loggers": false,
+        "formatters": {
+            "console": {
+                "format": "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+            }
+        },
+        "handlers": {
+            "file": {
+                "class": "logging.handlers.RotatingFileHandler",
+                "formatter": "console",
+                "filename": "/data/bb_change_broker.log",
+                "maxBytes": 102400,
+                "backupCount": 10
+            }
+        },
+        "loggers": {
+            "": {
+                "handlers": [
+                    "file"
+                ],
+                "level": "DEBUG"
+            }
+        }
+    },
+```
 
 ### Change sources
 
@@ -228,16 +261,3 @@ At the moment, the module does not support defining multiple masters. However, y
   2. Each server needs a separate queue in the broker
   3. In the post-commit and post-receive hooks, you call bb_change_broker for each master
   4. For each method call, define a different config file with the queue and credentials for the master.
-
-### Disable Logging
-
-If you want to disable logging, then you can set the log level to 50 and log to /dev/null.
-
-```json
-  "DEFAULT": {
-    "mode": "client",
-    "encoding": "utf-8",
-    "log_file": "/dev/null",
-    "log_level": 50
-  }
-```	
