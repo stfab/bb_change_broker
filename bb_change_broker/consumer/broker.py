@@ -30,6 +30,7 @@ class BrokerConsumer(BaseConsumer):
         :param username (str): The username of the the broker.
         :param password (str): The password of the the broker.
         :param retry_on_disconnect (bool): Whether to retry on disconnect.
+            Note: This flag is only used when testing, because we need to exit the loop.
         :param handler (BaseBrokerHandler): The handler for the broker.
         :param logger (Logger): The logger to use.
         """

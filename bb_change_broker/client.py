@@ -17,12 +17,7 @@ class Client:
 
         :param config (dict): The configuration of the client.
         """
-        self.logger = Logger(
-            config["DEFAULT"]["log_file"] if "log_file" in config["DEFAULT"] else None,
-            int(config["DEFAULT"]["log_level"])
-            if "log_level" in config["DEFAULT"]
-            else 10,
-        )
+        self.logger = Logger(config["logging"] if "logging" in config else None)
         self.rabbitmq = BrokerPublisher(
             host=config["rabbitmq"]["host"],
             port=int(config["rabbitmq"]["port"]),
@@ -60,8 +55,6 @@ class Client:
         for change in changes:
             if not (
                 self.rabbitmq.publish(str(change), exchange="", routing_key=self.queue)
-                # TODO: For each buildbot we need a queue or we send multiple messages to the same queue
-                # with some identifier for the buildbot
             ):
                 self.logger.error(
                     "Failed to publish change to RabbitMQ, sending to Buildbot instead."

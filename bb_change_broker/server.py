@@ -15,12 +15,7 @@ class Server(object):
 
         :param config (dict): The configuration of the server.
         """
-        self.logger = Logger(
-            config["DEFAULT"]["log_file"] if "log_file" in config["DEFAULT"] else None,
-            int(config["DEFAULT"]["log_level"])
-            if "log_level" in config["DEFAULT"]
-            else 10,
-        )
+        self.logger = Logger(config["logging"] if "logging" in config else None)
         self.rabbitmq = BrokerConsumer(
             host=config["rabbitmq"]["host"],
             port=int(config["rabbitmq"]["port"]),

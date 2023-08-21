@@ -1,44 +1,23 @@
 """Implementation of a logger that logs to a file."""
 
 import logging
+import logging.config
 
 
 class Logger:
     """A custom logger."""
 
-    def __init__(self, log_file_name=None, debug_level=logging.DEBUG):
+    def __init__(self, logging_config=None):
         """Initialize the logger.
 
         :param log_file_name (str): The name of the log file. If None, logs to stdout.
         :param debug_level (int): The debug level of the logger.
         """
-        self.log_file_name = log_file_name
+        if logging_config is not None:
+            logging.config.dictConfig(logging_config)
+        else:
+            logging.basicConfig(filename="/dev/null", level=logging.CRITICAL)
         self.logger = logging.getLogger("bb_change_broker")
-        self.logger.setLevel(logging.DEBUG)
-        format = logging.Formatter(
-            "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
-        )
-        handler = (
-            logging.FileHandler(log_file_name)
-            if log_file_name is not None and log_file_name != ""
-            else logging.StreamHandler()
-        )
-        handler.setFormatter(format)
-        handler.setLevel(debug_level)
-        # Disable pika logging
-        logging.getLogger("pika").setLevel(logging.CRITICAL)
-
-        # TODO: This is a hack to prevent duplicate log messages 
-        # Investigate why the class is instantiated multiple times
-        if len(self.logger.handlers) == 0:
-            self.logger.addHandler(handler)
-        elif (
-            len(self.logger.handlers) == 1
-            and self.logger.handlers[0].__class__ != logging.FileHandler
-            and handler.__class__ == logging.FileHandler
-        ):
-            self.logger.handlers = []
-            self.logger.addHandler(handler)
 
     def debug(self, *args):
         """Log a debug message.
