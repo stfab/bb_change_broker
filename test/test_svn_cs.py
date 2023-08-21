@@ -14,19 +14,19 @@ class TestSubversionChangeSource(unittest.TestCase):
             "/srv/svn/repository",
             cli=MockCli(),
             filters=[],
-            logger=Logger("/data/bb_change_broker.log", 10),
+            logger=Logger(),
         )
         self.svn_cs2 = SubversionChangeSource(
             "/srv/svn/repository",
             cli=MockCli(),
             filters=[(["project", "trunk"], 0, 2)],
-            logger=Logger("/data/bb_change_broker.log", 10),
+            logger=Logger(),
         )
         self.svn_cs3 = SubversionChangeSource(
             "/srv/svn/repository",
             cli=MockCli(),
             filters=[(["project", "-trunk"], 0, 2)],
-            logger=Logger("/data/bb_change_broker.log", 10),
+            logger=Logger(),
         )
 
     def test_get_changes(self):

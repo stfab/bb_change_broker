@@ -12,7 +12,7 @@ from bb_change_broker.util.log import Logger
 class TestBrokerPublisher(unittest.TestCase):
     def setUp(self):
         self.broker_handler = MockBrokerHandler()
-        self.logger = Logger("", 10)
+        self.logger = Logger()
         self.broker_publisher = BrokerPublisher(
             host="localhost",
             port=8010,

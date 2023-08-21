@@ -16,7 +16,7 @@ class TestGitChangeSource(unittest.TestCase):
         self.git_change_source = GitChangeSource(
             "repository",
             cli=MockCli(),
-            logger=Logger("/data/bb_change_broker.log", 10),
+            logger=Logger(),
         )
 
     def test_get_changes(self):
