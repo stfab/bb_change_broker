@@ -1,3 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "bb_change_broker"
+version = "1.0.0"
+description = "A module to publish changes to buildbot via a message broker"
+requires-python = ">=3.6"
+readme = "README.md"
+authors = [{ name = "Fabian Stadler", email = "mail@fabianstadler.com" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = ["pika"]
+
+[tool.setuptools]
+script-files = ["bin/bb_change_broker"]
+
 [tool.coverage.run]
 # the following files are omitted when using coverage
 omit = [
